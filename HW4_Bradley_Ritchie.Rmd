@@ -1,0 +1,51 @@
+---
+title: "HW4_Bradley_Ritchie"
+author: "Ritchie Bradley"
+date: "3/6/2022"
+output: html_document
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+---
+
+***Boating Deaths by year and type of vessel***
+
+Boating is a popular summer pastime for many, and fishermen may boat year round to try and land the catch of a lifetime. Boats are also still a very important mode of transportation for cargo going to and from other countries. Unfortunately, there are risks associated with boating and it is inevitable that people will perish either because of or while on a boat. Data from the Bureau of Transportation was used to make interactive tables that give easy access to yearly boating deaths by year or type of vessel (when available).
+
+Data may not be available every year for certain vessel types due to either reporting deficiencies or no deaths that year. Data can be found on the [Bureau of Transportation Statistics website](https://www.bts.gov/content/transportation-fatalities-mode).
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+library(tidyverse)
+library(reactable)
+library(kableExtra)
+boats <- read.csv("BTS Boat Deaths 1960-2020.csv")
+boats <- boats[7:38, 0:6]#removing data that isn't yearly data. There were formatting issues otherwise.
+boats %>% reactable(columns = list(
+  Year = colDef(name = "Year"),
+  Total.Deaths = colDef(name = "Total Deaths"),
+  Passenger.vessel = colDef(name = "Passenger Vessel", align = "center"),
+  Freight.vessel = colDef(name = "Freight Vessel"),
+  Industrial  = colDef(name = "Other Industrial Vessel", align = "center"),
+  Recreational.boating = colDef(name = "Recreational Vessel", align = "center")
+  
+)) 
+```
+
+***The Most Famous Boating Accident: The Titanic***
+
+The `titanic` package found in R was used to provide a glimpse into who survived the Titanic accident and who did not. This data was included because of the role of the Titanic as one of the most recognizable boating accidents to ever occur. **Freq in this table indicates that an event did or did not happen, i.e. there were zero 1st class male children who did not survive, but there were 35 3rd class male children who did not survive.**
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+library(tidyverse)
+library(reactable)
+library(kableExtra)
+i <- Titanic
+df_i<-as.data.frame(i)
+
+kable(df_i)%>%
+kable_styling(bootstrap_options = "hover", full_width = FALSE)
+```
+
+
